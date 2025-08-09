@@ -1,103 +1,134 @@
-import Image from "next/image";
+import { createServerClient_ } from '@/lib/supabase-server'
+import Link from 'next/link'
+import AudioVisualizer from '@/components/AudioVisualizer'
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createServerClient_()
+  const { data: { session } } = await supabase.auth.getSession()
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="flex-1">
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <div className="text-center">
+          <h1 className="text-6xl md:text-7xl font-light mb-12 leading-tight">
+            Voice AI agents<br />
+            for developers
+          </h1>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
+            {session ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="bg-green-500 hover:bg-green-600 text-black px-8 py-3 rounded-full text-sm font-medium flex items-center space-x-2"
+                >
+                  <span>OPEN DASHBOARD</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </Link>
+                <Link
+                  href="/docs"
+                  className="border border-gray-600 hover:border-gray-500 text-white px-8 py-3 rounded-full text-sm font-medium flex items-center space-x-2"
+                >
+                  <span>READ THE DOCS</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signup"
+                  className="bg-green-500 hover:bg-green-600 text-black px-8 py-3 rounded-full text-sm font-medium flex items-center space-x-2"
+                >
+                  <span>SIGN UP</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </Link>
+                <Link
+                  href="/docs"
+                  className="border border-gray-600 hover:border-gray-500 text-white px-8 py-3 rounded-full text-sm font-medium flex items-center space-x-2"
+                >
+                  <span>READ THE DOCS</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </Link>
+              </>
+            )}
+          </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          {/* Voice Interface */}
+          <div className="mb-20">
+            <div className="bg-gray-100 text-black px-8 py-4 rounded-full inline-flex items-center space-x-3 text-sm font-medium">
+              <span>TALK TO VAPI</span>
+              <div className="grid grid-cols-3 gap-1">
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Audio Visualizer */}
+          <AudioVisualizer />
+
+          {session && (
+            <div className="mt-16">
+              <p className="text-xl text-gray-300 mb-8">
+                Welcome back, {session.user.email}!
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <Link 
+                  href="/dashboard"
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-gray-700 transition-colors"
+                >
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Dashboard
+                  </h3>
+                  <p className="text-gray-400">
+                    Access your main dashboard
+                  </p>
+                </Link>
+                
+                <Link 
+                  href="/profile"
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-gray-700 transition-colors"
+                >
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Profile
+                  </h3>
+                  <p className="text-gray-400">
+                    Manage your profile information
+                  </p>
+                </Link>
+                
+                <Link 
+                  href="/settings"
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-gray-700 transition-colors"
+                >
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Settings
+                  </h3>
+                  <p className="text-gray-400">
+                    Configure your account settings
+                  </p>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </div>
+    </main>
+  )
 }
